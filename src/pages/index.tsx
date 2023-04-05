@@ -16,6 +16,8 @@ import type { MessageHistory } from '@/types';
 import { ChatRole } from '@/types';
 
 const Chatbot: React.FC = () => {
+  const [speechRecognition, setSpeechRecognition] =
+    useState<SpeechRecognition>();
   const [isListening, setIsListening] = useState(false);
   const [isThinking, setIsThinking] = useState(false);
   const [isAiTalking, setIsAiTalking] = useState(false);
@@ -33,6 +35,12 @@ const Chatbot: React.FC = () => {
   useEffect(() => {
     try {
       requestMicrophonePermission();
+      setSpeechRecognition(
+        new (window.SpeechRecognition ||
+          (window as any).webkitSpeechRecognition ||
+          (window as any).mozSpeechRecognition ||
+          (window as any).msSpeechRecognition)()
+      );
     } catch (error: any) {
       console.log(error.message);
     }
@@ -84,10 +92,7 @@ const Chatbot: React.FC = () => {
 
   const createSpeechRecognition = () => {
     // Use Web Speech API to recognize speech
-    const rec = new (window.SpeechRecognition ||
-      (window as any).webkitSpeechRecognition ||
-      (window as any).mozSpeechRecognition ||
-      (window as any).msSpeechRecognition)();
+    const rec = speechRecognition!;
 
     rec.lang = getRecognitionLang(loadSpeakLangFromStore() || SpeakLang.zh);
     rec.interimResults = false;
@@ -255,7 +260,7 @@ const Chatbot: React.FC = () => {
               } focus:shadow-outline w-full rounded-full py-2 px-4 text-3xl font-bold text-white focus:outline-none`}
               onClick={toggleListening}
             >
-              {isListening ? 'Click to Stop' : 'Click to Talk'}
+              {isListening ? 'Listening..' : 'Click to Talk'}
             </button>
           )}
 
