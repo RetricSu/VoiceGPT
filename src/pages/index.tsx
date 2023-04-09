@@ -8,6 +8,7 @@ import {
   loadSpeakLangFromStore,
   SpeakLang,
 } from '@/components/selectLang';
+import SpeechAnimation from '@/components/speechAnimation';
 import TalkingWave from '@/components/talkingWave';
 import { Meta } from '@/layouts/Meta';
 import { OpenAI } from '@/service/chatGPT';
@@ -21,6 +22,7 @@ const Chatbot: React.FC = () => {
   const [isListening, setIsListening] = useState(false);
   const [isThinking, setIsThinking] = useState(false);
   const [isAiTalking, setIsAiTalking] = useState(false);
+  const [utterance, setUtterance] = useState<SpeechSynthesisUtterance>();
   const [message, setMessage] = useState('');
   const [response, setResponse] = useState('');
   const [recognition, setRecognition] = useState<SpeechRecognition>();
@@ -206,6 +208,7 @@ const Chatbot: React.FC = () => {
         handleMute();
       }
     };
+    setUtterance(utter);
 
     // Speak the text using the SpeechSynthesisUtterance API
     window.speechSynthesis.speak(utter);
@@ -214,6 +217,7 @@ const Chatbot: React.FC = () => {
   const handleMute = () => {
     setIsAiTalking(false);
     window.speechSynthesis.cancel();
+    setUtterance(undefined);
   };
 
   useEffect(() => {
@@ -238,6 +242,9 @@ const Chatbot: React.FC = () => {
       }
     >
       <div className="flex flex-col items-center justify-center">
+        {utterance && (
+          <SpeechAnimation utter={utterance} isSpeaking={isAiTalking} />
+        )}
         {isAiTalking && (
           <div className="w-40">
             <TalkingWave />
@@ -295,14 +302,7 @@ const Chatbot: React.FC = () => {
         <div>
           <button
             className="text-sm capitalize text-gray-400"
-            onClick={() => {
-              const utt = new SpeechSynthesisUtterance();
-              const lang = loadSpeakLangFromStore() || SpeakLang.zh;
-              utt.text = 'fix it! please try again';
-              utt.lang = getSpeechLang(lang);
-              utt.voice = findCorrectVoice(lang);
-              window.speechSynthesis.speak(utt);
-            }}
+            onClick={() => speakLang('fix it! please try again')}
           >
             no sound on mobile? click here to fix it
           </button>
