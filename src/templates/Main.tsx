@@ -31,7 +31,7 @@ const Main = (props: IMainProps) => {
           </div>
         </header>
 
-        <main className="content py-5 text-xl">{props.children}</main>
+        <main className="content text-xl">{props.children}</main>
 
         <footer className="border-t border-gray-300 py-8 text-center text-sm">
           © Copyright {new Date().getFullYear()} {AppConfig.title}. Made by{' '}

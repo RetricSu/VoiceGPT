@@ -252,9 +252,11 @@ const Chatbot: React.FC = () => {
             <TalkingWave />
           </div>
         )}
-        <div className="mt-2 h-40 overflow-y-hidden">
-          {isThinking && <Loading text="Thinking.." />}
-        </div>
+        {isThinking && (
+          <div className="mt-2 h-40 overflow-y-hidden">
+            <Loading text="Thinking.." />
+          </div>
+        )}
 
         {message && (
           <div className="mt-4">
