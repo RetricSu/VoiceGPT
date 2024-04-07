@@ -1,4 +1,4 @@
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faKey, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react';
 
@@ -101,4 +101,29 @@ const ApiKeyInput: React.FC<ApiKeyInputProps> = ({
   );
 };
 
-export default ApiKeyInput;
+export const ApiKeyMenu = () => {
+  const [showApiKeyManager, setShowApiKeyManager] = useState(false);
+  return (
+    <>
+      <button
+        onClick={() => setShowApiKeyManager((prev) => !prev)}
+        className="ml-4 w-auto rounded-md bg-gray-200 py-2 px-3 text-sm font-medium text-black hover:bg-gray-300"
+      >
+        <span className="flex w-auto">
+          <FontAwesomeIcon icon={faKey} className="mr-2 w-4" />
+          Api Key
+        </span>
+      </button>
+      {showApiKeyManager && (
+        <div className="fixed inset-0 z-50 bg-black opacity-50"></div>
+      )}
+      {showApiKeyManager && (
+        <div className="absolute inset-0 z-50 flex items-center justify-center rounded-md bg-white py-5 px-6">
+          <ApiKeyInput onClose={() => setShowApiKeyManager(false)} />
+        </div>
+      )}
+    </>
+  );
+};
+
+export default ApiKeyMenu;

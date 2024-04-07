@@ -29,7 +29,7 @@ const ChatHistory: React.FC<ChatHistoryProps> = ({ messages }) => {
   };
 
   return (
-    <div className="mt-10 max-h-20 w-full overflow-y-auto px-4 outline outline-1 outline-gray-200">
+    <div className="mt-10 max-h-full w-full overflow-y-auto px-4 outline outline-1 outline-gray-200">
       {messages.filter((s) => s.role !== ChatRole.system).map(renderMessage)}
     </div>
   );

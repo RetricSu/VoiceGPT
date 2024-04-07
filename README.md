@@ -4,6 +4,8 @@ talking to AI in voice, learn speaking a second language from chatGPT
 
 https://gptvoice.vercel.app/
 
+You can config api url and api key to use your own api or free gpt api like [https://github.com/skzhengkai/free-chatgpt-api](https://github.com/skzhengkai/free-chatgpt-api)
+
 <img width="885" alt="image" src="https://user-images.githubusercontent.com/23436060/228512131-6ccbc280-4d01-4717-a007-5cbc872b1aed.png">
 
 ## Known Issues

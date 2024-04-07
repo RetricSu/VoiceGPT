@@ -119,6 +119,7 @@ const Chatbot: React.FC = () => {
   };
 
   const thinking = async () => {
+    const apiUrl = localStorage.getItem('apiUrl');
     const key = localStorage.getItem('apiKey');
     if (key == null) return alert('you need to set api key first!');
 
@@ -138,6 +139,7 @@ const Chatbot: React.FC = () => {
     setIsThinking(true);
     setResponse('');
     const api = new OpenAI({
+      apiUrl,
       apiKey: key,
     });
     const text = await api.sendContextMessages({
@@ -250,9 +252,11 @@ const Chatbot: React.FC = () => {
             <TalkingWave />
           </div>
         )}
-        <div className="mt-2 h-40 overflow-y-hidden">
-          {isThinking && <Loading text="Thinking.." />}
-        </div>
+        {isThinking && (
+          <div className="mt-2 h-40 overflow-y-hidden">
+            <Loading text="Thinking.." />
+          </div>
+        )}
 
         {message && (
           <div className="mt-4">
