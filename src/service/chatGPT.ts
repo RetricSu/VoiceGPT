@@ -13,13 +13,17 @@ type RequestBody = {
   temperature: number;
 };
 
+const defaultApiUrl = 'https://api.openai.com';
 export class OpenAI {
   private apiUrl: string;
 
   private apiKey: string;
 
-  constructor({ apiKey, apiUrl }: { apiKey: string; apiUrl?: string }) {
-    this.apiUrl = apiUrl || 'https://api.openai.com/v1/chat/completions';
+  constructor({ apiKey, apiUrl }: { apiKey: string; apiUrl?: string | null }) {
+    if (apiUrl && apiUrl.endsWith('/')) {
+      apiUrl = apiUrl.slice(0, -1);
+    }
+    this.apiUrl = `${apiUrl || defaultApiUrl}/v1/chat/completions`;
     this.apiKey = apiKey;
   }
 

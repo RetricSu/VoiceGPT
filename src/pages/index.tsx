@@ -119,6 +119,7 @@ const Chatbot: React.FC = () => {
   };
 
   const thinking = async () => {
+    const apiUrl = localStorage.getItem('apiUrl');
     const key = localStorage.getItem('apiKey');
     if (key == null) return alert('you need to set api key first!');
 
@@ -138,6 +139,7 @@ const Chatbot: React.FC = () => {
     setIsThinking(true);
     setResponse('');
     const api = new OpenAI({
+      apiUrl,
       apiKey: key,
     });
     const text = await api.sendContextMessages({
