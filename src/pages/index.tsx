@@ -8,9 +8,11 @@ import {
   loadSpeakLangFromStore,
   SpeakLang,
 } from '@/components/selectLang';
+import { loadSelectedPromptFromStore } from '@/components/selectPrompt';
 import SpeechAnimation from '@/components/speechAnimation';
 import TalkingWave from '@/components/talkingWave';
 import { Meta } from '@/layouts/Meta';
+import { getFirstSystemMessage } from '@/prompt';
 import { OpenAI } from '@/service/chatGPT';
 import { Main } from '@/templates/Main';
 import type { MessageHistory } from '@/types';
@@ -26,13 +28,7 @@ const Chatbot: React.FC = () => {
   const [message, setMessage] = useState('');
   const [response, setResponse] = useState('');
   const [recognition, setRecognition] = useState<SpeechRecognition>();
-  const [history, setHistory] = useState<MessageHistory[]>([
-    {
-      role: ChatRole.system,
-      content:
-        'you need to pretend to be a human chatter. the input text is converting from speech recognition, you need to guess what the user trying to say if the input text feels wrong due to the speech recognition precision',
-    },
-  ]);
+  const [history, setHistory] = useState<MessageHistory[]>([]);
 
   useEffect(() => {
     try {
@@ -142,8 +138,14 @@ const Chatbot: React.FC = () => {
       apiUrl,
       apiKey: key,
     });
+
+    let messages = [...history, question];
+    const prompt = loadSelectedPromptFromStore();
+    if (prompt) {
+      messages = [getFirstSystemMessage(prompt.key)!].concat(messages);
+    }
     const text = await api.sendContextMessages({
-      messages: [...history, question],
+      messages,
     });
     setResponse(text);
     setHistory((prev) => {

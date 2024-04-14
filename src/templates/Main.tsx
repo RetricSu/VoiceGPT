@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import { ApiKeyMenu } from '@/components/apiKeyInput';
 import { ApiUrlMenu } from '@/components/apiUrlInput';
 import { SelectLang } from '@/components/selectLang';
+import { SelectPrompt } from '@/components/selectPrompt';
 import { AppConfig } from '@/utils/AppConfig';
 
 type IMainProps = {
@@ -26,6 +27,7 @@ const Main = (props: IMainProps) => {
             <div className="flex w-auto items-center space-x-4 overflow-scroll">
               <ApiUrlMenu />
               <ApiKeyMenu />
+              <SelectPrompt />
               <SelectLang />
             </div>
           </div>
